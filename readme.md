@@ -9,14 +9,14 @@ cp etc/config.json.sample etc/config.json
 after copy set next field:
 
     1. Redmine:
-        host   (example: job.redmine.com)
-        apiKey (user apiKey from redmine with all permission)
+        -host   (example: job.redmine.com)
+        -apiKey (user apiKey from redmine with all permission)
     2. Mail:
-        from (example redmine-reports@job.com)
+        -from (example redmine-reports@job.com)
     3. emailReport:
-        destinationEmails (array with recipient emails, example: [worker1@mail.com, worker2@mail.com])
-    4. appUrl: (example http://localhost:8080/api/v1)
-    5. minLogTime: (example 40 hours at last week for eight-hour shift)
+        -destinationEmails (array with recipient emails, example: [worker1@mail.com, worker2@mail.com])
+    4. -appUrl: (example http://localhost:8080/api/v1)
+    5. -minLogTime: (example 40 hours at last week for eight-hour shift)
 
 cp etc/users.htpasswd.sample etc/users.htpasswd
 after copy write login and password for users, for example
@@ -53,8 +53,6 @@ npm start
 ###Projects list
 
 ####Request
-
-GET /api/v1/projects
 
 ```js
 GET /api/v1/projects
