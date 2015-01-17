@@ -14,6 +14,7 @@ after copy set next field:
     4. destinationEmails (array with recipient emails, example: [worker1@mail.com, worker2@mail.com])
     5. appUrl: (example http://localhost:8080/api/v1)
     6. minLogTime: (example 40 hours at last week for eight-hour shift)
+    7. staticPath: (example ../client/public/)
 
 cp etc/users.htpasswd.sample etc/users.htpasswd
 after copy write login and password for users, for example

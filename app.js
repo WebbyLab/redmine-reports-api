@@ -8,8 +8,10 @@ var express    = require('express');
 var app        = express();
 var router     = express.Router();
 
+var config     = require('etc/config.json');
+var staticPath = config.staticPath;
 
-app.use(express.static( __dirname + '/../client/public/'));
+app.use(express.static( __dirname + '/' + staticPath));
 
 // Authentication module.
 var basic = auth.basic({

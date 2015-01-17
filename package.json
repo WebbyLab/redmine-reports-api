@@ -17,6 +17,7 @@
     "express": "*",
     "factory": "*",
     "forever": "*",
+    "http-auth": "^2.2.5",
     "livr": "*",
     "lodash": "*",
     "mocha": "*",
