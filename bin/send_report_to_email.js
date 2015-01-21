@@ -1,28 +1,18 @@
 #!/usr/bin/env node
 'use strict';
 
-var config     = require('../etc/config');
-var appUrl     = config.appUrl;
-var minLogTime = config.minLogTime;
+var config = require('../etc/config');
+var appUrl = config.appUrl;
 
 var destinationEmails = config.emailReport.destinationEmails.join(", ");
 
-var docopt = require('docopt').docopt;
-var moment = require('moment');
-var _      = require('lodash');
-var axios  = require('axios');
+var docopt     = require('docopt').docopt;
+var moment     = require('moment');
+var _          = require('lodash');
+var axios      = require('axios');
 
 var nodemailer        = require("nodemailer");
 var sendmailTransport = require('nodemailer-sendmail-transport');
-
-var ACTIVITIES = [
-    'Development',
-    'Other',
-    'Design',
-    'Fixing',
-    'Testing by QA',
-    'Unknown'
-];
 
 var doc = [
     "",
@@ -41,11 +31,12 @@ Sender.prototype = {
     send: function(){
         var self = this;
         self._prepareMail().then(function(mailData){
+
             var tample = {
                 from   : config.mail.from,
                 subject: "Redmine report ",
                 to     : destinationEmails,
-                html   : mailData.table
+                html   : mailData.tables
             };
 
             self.transport.sendMail(tample, function(error, response){
@@ -68,6 +59,7 @@ Sender.prototype = {
             var groupedTimeEntries = {};
             var timeEntries = data.timeEntries;
             var users       = data.users;
+            var activities  = [];
 
             for (var i=0; i < timeEntries.length; i++) {
                 var user = timeEntries[i].links.user;
@@ -80,18 +72,21 @@ Sender.prototype = {
 
                 var timeEntry = groupedTimeEntries[user];
 
-                for ( var k = 0; k < ACTIVITIES.length; k++){
-                    if ( !timeEntry.hoursByActivity[ACTIVITIES[k]] ) timeEntry.hoursByActivity[ACTIVITIES[k]] = 0;
+                for ( var key in timeEntry.hoursByActivity ){
+                    if ( !~activities.indexOf(key) ){
+                        activities.push(key);
+                    }
                 }
             }
 
             return {
-                table: self._prepareTable(groupedTimeEntries, users)
+                table: self._prepareTable(groupedTimeEntries, users, activities)
             };
         });
     },
 
-    _prepareTable: function(groupedTimeEntries, users){
+    _prepareTable: function(groupedTimeEntries, users, activities){
+
         var table = '<table cellpadding="10" border="1" cellspacing="0" style="'
                         +'display:inline-block;'
                         +'color:#3A89A3;'
@@ -103,31 +98,33 @@ Sender.prototype = {
                         +'</h2></caption>'
                         +'<thead style="font-weight:bold;"><tr>'
                         +'<td align="center">User</td>'
-                        +'<td>Total hours</td>'
-                        +'<td>Development</td>'
-                        +'<td>Other</td>'
-                        +'<td>Design</td>'
-                        +'<td>Fixing</td>'
-                        +'<td>Testing by QA</td>'
-                        +'<td>Unknown</td>'
-                        +'</tr></thead>'
-                        +'<tbody><tr>' ;
+                        +'<td align="center">Total hours</td>';
 
-        function findById(chr) {
-            return chr.id == TimeEntry.user;
-        }
+        activities.forEach(function(activity){
+            table += '<td>' + activity + '</td>';
+        });
+
+        table += '</tr></thead>'
+              +  '<tbody><tr>' ;
 
         for(var key in groupedTimeEntries){
 
-            var TimeEntry = groupedTimeEntries[key] ;
-            var name = _.find(users, findById).name;
-            var tr = TimeEntry.totalHours < minLogTime ? '<tr style="background:#f2dede; color:#A94442;">' : '<tr style="background: #dff0d8">';
-            table += (tr + '<td align="center">'+ name +"</td>");
-            table += '<td align="center">' + TimeEntry.totalHours.toFixed(1) + "</td>";
+            var timeEntry = groupedTimeEntries[key] ;
 
-            for ( var j = 0; j < ACTIVITIES.length; j++){
-                table += '<td align="center">' + TimeEntry.hoursByActivity[ACTIVITIES[j]].toFixed(1) + "</td>";
-            }
+            var name = _.find(users, function (user) {
+                return user.id == timeEntry.user;
+            }).name;
+
+            var minimalHours = 35;
+            var tr = timeEntry.totalHours < minimalHours ? '<tr style="background:#f2dede; color:#A94442;">' : '<tr style="background: #dff0d8">';
+            table += (tr + '<td align="center">'+ name +"</td>");
+            table += '<td align="center">' + timeEntry.totalHours.toFixed(1) + "</td>";
+
+            activities.forEach(function(activity){
+                var hours = timeEntry.hoursByActivity[activity] !== undefined ? timeEntry.hoursByActivity[activity].toFixed(1) : 0 ;
+                table += '<td align="center">' + hours + "</td>";
+            });
+
 
             table +="</tr>" ;
         }
