@@ -1,0 +1,4 @@
+etc/users.htpasswd
+etc/config.json
+node_modules/
+npm-debug.log

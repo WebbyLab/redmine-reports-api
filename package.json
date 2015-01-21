@@ -1,0 +1,44 @@
+{
+  "name": "redmine-reports",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "forever start app.js",
+    "stop": "forever stop app.js &>/dev/null",
+    "test": "TEST_MODE=1 mocha --timeout 60000 --reporter spec --ui qunit tests/*.js"
+  },
+  "dependencies": {
+    "assert": "*",
+    "axios": "^0.4.2",
+    "body-parser": "^1.9.0",
+    "chai": "*",
+    "cors": "*",
+    "docopt": "*",
+    "express": "*",
+    "factory": "*",
+    "forever": "*",
+    "http-auth": "^2.2.5",
+    "livr": "*",
+    "lodash": "*",
+    "mocha": "*",
+    "moment": "*",
+    "mongojs": "*",
+    "mongoose": "^3.8.16",
+    "mongoose-q": "*",
+    "nodemailer": "*",
+    "nodemailer-sendmail-transport": "^1.0.0",
+    "promised-redmine": "*",
+    "q": "*",
+    "q-io": "*",
+    "should": "*",
+    "supertest": "*",
+    "util": "*"
+  },
+  "description": "Server-side redmine-reports",
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.webbylab.com:webbylab/redmine-reports.git"
+  },
+  "author": "WebbyLab"
+}
