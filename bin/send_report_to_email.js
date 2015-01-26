@@ -5,6 +5,8 @@ var config = require('../etc/config');
 var appUrl = config.appUrl;
 
 var destinationEmails = config.emailReport.destinationEmails.join(", ");
+var login    = config.emailReport.login;
+var password = config.emailReport.password;
 
 var docopt     = require('docopt').docopt;
 var moment     = require('moment');
@@ -36,7 +38,7 @@ Sender.prototype = {
                 from   : config.mail.from,
                 subject: "Redmine report ",
                 to     : destinationEmails,
-                html   : mailData.tables
+                html   : mailData.table
             };
 
             self.transport.sendMail(tample, function(error, response){
@@ -133,11 +135,15 @@ Sender.prototype = {
     },
 
     _getTimeEntries: function(){
-        return axios.get(appUrl + "/time_entries",{
+        return axios({
+            url: appUrl + "/time_entries",
             params: {
                 startDate: moment().add(-1, 'week').format('YYYY-MM-DD'),
                 endDate:   moment().add(-1, 'day').format('YYYY-MM-DD'),
                 include:   "user"
+            },
+            headers: {
+                Authorization: "Basic " + new Buffer(login+":"+password).toString('base64')
             }
         }).then(function(res){
             return {

@@ -1,9 +1,15 @@
-# Redmine-reports
+# Redmine-reports API
 Redmine time logging application built with [Node.js](http://nodejs.org/)
 ##Installation
-git clone https://github.com/siavolt/redmine-reports-api.git
+git clone https://github.com/webbylab/redmine-reports-api.git
 
 npm install
+
+cp etc/users.htpasswd.sample etc/users.htpasswd
+after copy write login and password for users, for example
+
+    user1:password
+    user2:password
 
 cp etc/config.json.sample etc/config.json
 after copy set next field:
@@ -12,15 +18,10 @@ after copy set next field:
     2. apiKey (user apiKey from redmine with all permission)
     3. from (example redmine-reports@job.com)
     4. destinationEmails (array with recipient emails, example: [worker1@mail.com, worker2@mail.com])
-    5. appUrl: (example http://localhost:8080/api/v1)
-    6. minLogTime: (example 40 hours at last week for eight-hour shift)
-    7. staticPath: (example ../client/public/)
-
-cp etc/users.htpasswd.sample etc/users.htpasswd
-after copy write login and password for users, for example
-
-    user1:password
-    user2:password
+    5. login and password from htpasswd for send_reports script
+    6. appUrl: (example http://localhost:8080/api/v1)
+    7. minLogTime: (example 40 hours at last week for eight-hour shift)
+    8. staticPath: (example ../client/public/)
 
 ##Uses
 For  sync  from redmine use sync_time_entries.js script with one of the modes, for example:

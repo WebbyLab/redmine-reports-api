@@ -9,10 +9,14 @@
         "transportOptions": {}
     },
     "emailReport": {
-        "destinationEmails": [example@example.com]
+        "destinationEmails": [
+            example@example.com
+        ],
+        "login":    "basic_auth_login",
+        "password": "basic_auth_password"
     },
 
-    "appUrl": "http://localhost:8080,/api/v1",
+    "appUrl": "http://localhost:8080/api/v1",
     "minLogTime": 30,
 
     "staticPath": "../client/public/"
