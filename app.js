@@ -11,6 +11,10 @@ var router     = express.Router();
 var config     = require('./etc/config.json');
 var staticPath = config.staticPath;
 
+
+app.use(cors());
+app.use(bodyParser.urlencoded());
+app.use(bodyParser.json({limit:1024*1024}));
 app.use(express.static( __dirname + '/' + staticPath));
 
 // Authentication module.
@@ -21,9 +25,6 @@ var basic = auth.basic({
 
 if ( !process.env["TEST_MODE"] ) app.use(auth.connect(basic));
 
-app.use(bodyParser.json({limit:1024*1024}));
-app.use(bodyParser.urlencoded());
-app.use(cors());
 app.use(router);
 
 var routes = require('./lib/routes');

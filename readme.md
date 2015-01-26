@@ -1,7 +1,7 @@
-# Redmine-reports
+# Redmine-reports API
 Redmine time logging application built with [Node.js](http://nodejs.org/)
 ##Installation
-git clone https://github.com/siavolt/redmine-reports-api.git
+git clone https://github.com/webbylab/redmine-reports-api.git
 
 npm install
 

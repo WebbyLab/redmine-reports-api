@@ -38,7 +38,7 @@ Sender.prototype = {
                 from   : config.mail.from,
                 subject: "Redmine report ",
                 to     : destinationEmails,
-                html   : mailData.tables
+                html   : mailData.table
             };
 
             self.transport.sendMail(tample, function(error, response){

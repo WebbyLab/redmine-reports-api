@@ -12,8 +12,8 @@
         "destinationEmails": [
             example@example.com
         ],
-        "login":    {{basic_auth_login}},
-        "password": {{basic_auth_password}}
+        "login":    "basic_auth_login",
+        "password": "basic_auth_password"
     },
 
     "appUrl": "http://localhost:8080,/api/v1",
